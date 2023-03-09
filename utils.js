@@ -9,7 +9,7 @@ function readFile(path) {
     const data = fs.readFileSync(path,
         { encoding: 'utf8', flag: 'r' });
 
-    return data;
+    return data.trim();
 
 }
 
@@ -29,12 +29,7 @@ function writeOutput(path, data) {
 
 }
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-}
-
 export {
     readFile, 
-    writeOutput,
-    getRandomInt
+    writeOutput
 }
