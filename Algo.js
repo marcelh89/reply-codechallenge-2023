@@ -1,9 +1,10 @@
 //import {getRandomInt} from './utils.js'
-import {board} from "./DataManager.js";
+import {board, fieldMap, Point} from "./DataManager.js";
 import {randomInt} from "crypto"
 
 export default function useTheAlgorithm(board,snakeList) {
     console.log("start algorithm")
+    console.log(board.initialMatrix);
 
     //board = createBoard(Field);
     let wormholes = gatherWormholes(board);
@@ -30,6 +31,7 @@ function moveSnake(snake) {
     snake.path.push(fieldToGo);
     snake.points += board.initialMatrix[x][y];
     snake.position = fieldToGo;
+    board.snakeMatrix[x][y] = 1;
 }
 
 function scanArea(position) {
@@ -46,7 +48,9 @@ function scanArea(position) {
                 //console.log("scanArea", x+i, y+j)
                 //console.log("fieldvalue", board.initialMatrix[x+i][y+j])
                 //valueList.push(board.initialMatrix[x+i][y+j]);
-                valueMap.set((x+i,y+j), board.initialMatrix[x+i][y+j]);
+                let map = new fieldMap();
+                map.Position = new Point(x+i,y+j)
+                valueMap.set(map.Position, board.initialMatrix[x+i][y+j]);
             }
         }
     }
@@ -54,14 +58,13 @@ function scanArea(position) {
 }
 
 function chooseDirection(areaMap) {
-    //console.log("chooseDirection", areaMap);
+    console.log("chooseDirection", areaMap.size);
     let p = [0,0];
     let max = 0;
-    for (let x in areaMap) {
-        console.log('value',areaMap.get(x));
-        if (areaMap.get(x) > max) {
-            max = areaMap.get(x);
-            p = [x[0],x[1]];
+    for (let [x, value] of areaMap.entries()){
+        if (value > max) {
+            max = value;
+            p = [x.x,x.y];
         }
     }
     return p;
@@ -72,7 +75,7 @@ function fieldNotBlocked(position) {
     if (x < 0 || y < 0) {
         return false;
     }
-    if (x >= board.rows || y >= board.columns) {
+    if (x >= board.columns || y >= board.rows) {
         return false;
     }
     //console.log("fieldNotBlocked", x,y)
@@ -88,8 +91,9 @@ function placeSnake() {
     let x = 0;
     let y = 0;
     while (valid == 0) {
-        x = randomInt(0, board.rows );
-        y = randomInt(0, board.columns);
+        x = randomInt(0, board.columns );
+        y = randomInt(0, board.rows);
+        //console.log("placeSnake", x,y)
         if (board.initialMatrix[x][y] != '*') {
             valid = 1;
         }
@@ -109,8 +113,8 @@ function createBoard() {
 
 function gatherWormholes(board) {
     let whMap = new Map();
-    for (let i; i<board.rows; i++) {
-        for (let j; j<board.columns; j++) {
+    for (let i; i<board.columns; i++) {
+        for (let j; j<board.rows; j++) {
             if (board.initialMatrix[i][j] == '*') {
                 value = calculateWHValue((i,j));
                 whMap.set((i,j), value);

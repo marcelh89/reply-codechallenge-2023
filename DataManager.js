@@ -6,7 +6,7 @@ import {readFile} from "./utils.js";
  */
 
 const files = fs.readdirSync("./inputs");
-const filename = files[0];
+const filename = files[1];
 
 const content = readFile("./inputs/" + filename);
 const data = content.split("\n");
@@ -35,6 +35,8 @@ class Board {
             this.initialMatrix.push(currentColumns)
         }
 
+        this.initialMatrix = this.initialMatrix[0].map((_, colIndex) => this.initialMatrix.map(row => row[colIndex]));
+
         //this.snakeMatrix = new Array(this.rows).fill(0).map(() => new Array(this.columns).fill(0));
 
         for(let currentRow = 2; currentRow < input_lines.length ; currentRow++){
@@ -46,6 +48,8 @@ class Board {
             })
             this.snakeMatrix.push(currentColumns)
         }
+
+        this.snakeMatrix = this.snakeMatrix[0].map((_, colIndex) => this.snakeMatrix.map(row => row[colIndex]));
     }
 }
 
@@ -55,6 +59,20 @@ class Snake {
         this.position = [0, 0]
         this.path = [] // [(0,0),(0,1),...]
         this.points = 0
+    }
+}
+
+class Point {
+    constructor(x,y){
+        this.x = x;
+        this.y = y;
+    }
+}
+
+class fieldMap {
+    constructor() {
+        this.Position = new Point(0,0);
+        this.value;
     }
 }
 
@@ -73,4 +91,4 @@ for(const length of data[1].split(" ")){
 /*
  * Export parsed and objectified input data
  */
-export {data, filename, board, snakeList};
+export {data, filename, board, snakeList, fieldMap, Point};
