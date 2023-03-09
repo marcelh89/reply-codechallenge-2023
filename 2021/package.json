@@ -1,0 +1,11 @@
+{
+  "name": "code-challenge-2021",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "ssh://git@bitbucket-arlanis.stormreply.cloud:7999/rep/code-challenge-2021.git",
+  "author": "m.hinderlich <m.hinderlich@reply.de>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
