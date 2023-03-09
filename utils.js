@@ -29,7 +29,12 @@ function writeOutput(path, data) {
 
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
 export {
     readFile, 
-    writeOutput
+    writeOutput,
+    getRandomInt
 }
