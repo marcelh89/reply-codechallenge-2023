@@ -1,19 +1,20 @@
 {
-  "name": "codechallenge",
+  "name": "reply-codechallenge-2023",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "File.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc *.ts && node main.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "The Cooles Repliers",
-  "license": "BigCashMoney License",
-  "dependencies": {
-    "fs": "^0.0.1-security"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcelh89/reply-codechallenge-2023.git"
   },
-  "devDependencies": {
-    "@types/node": "^17.0.21",
-    "typescript": "^4.6.2"
-  }
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcelh89/reply-codechallenge-2023/issues"
+  },
+  "homepage": "https://github.com/marcelh89/reply-codechallenge-2023#readme"
 }
