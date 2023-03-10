@@ -6,10 +6,10 @@ import { readFile } from "./utils.js";
  * Read input
  */
 
-const files = fs.readdirSync("./inputs");
+const files = fs.readdirSync("../inputs");
 const filename = files[0];
 
-const content = readFile("./inputs/" + filename);
+const content = readFile("../inputs/" + filename);
 const data = content.split("\n").map((e) => e.trim());
 
 class Field {
@@ -78,7 +78,52 @@ class Snake {
     this.score = this.startingPosition.score;
   }
 
-  
+  pathfinding() {
+    const current_c = this.startingPosition.c;
+    const current_r = this.startingPosition.r;
+    let possibleNextPositions = [];
+
+    // left
+    if (current_c > 0) {
+      // can move left
+      const nextLeft = board.initialMatrix.get(`${current_r},${current_c - 1}`);
+      //and is no wormhole and field is not used by another snake
+      if (nextLeft.value !== "*" && !nextLeft.used)
+        possibleNextPositions.push(nextLeft);
+    }
+
+    // right
+    if (current_c < board.columns - 1) {
+      // can move left
+      const nextRight = board.initialMatrix.get(
+        `${current_r},${current_c + 1}`
+      );
+      //and is no wormhole and field is not used by another snake
+      if (nextRight.value !== "*" && !nextRight.used)
+        possibleNextPositions.push(nextRight);
+    }
+
+    // up
+    if (current_r > 0) {
+      // can move left
+      const nextUp = board.initialMatrix.get(`${current_r - 1},${current_c}`);
+      //and is no wormhole and field is not used by another snake
+      if (nextUp.value !== "*" && !nextUp.used)
+        possibleNextPositions.push(nextUp);
+    }
+
+    // down
+    if (current_r < board.rows - 1) {
+      // can move left
+      const nextDown = board.initialMatrix.get(`${current_r + 1},${current_c}`);
+      //and is no wormhole and field is not used by another snake
+      if (nextDown.value !== "*" && !nextDown.used)
+        possibleNextPositions.push(nextDown);
+    }
+
+    possibleNextPositions.sort((a,b) => a.score > b.score ? -1 : 1)
+    console.log("possibleNextPositions", possibleNextPositions);
+  }
 
   getFreeStartingPosition(snakeList) {
     let positionTaken = true;
@@ -122,6 +167,7 @@ class Snake {
       `${this.currentPosition.r - 1},${this.currentPosition.c}`
     );
     this.path.push("L");
+    console.log("moveLeft to " + this.currentPosition)
     this.score += this.currentPosition.score;
   }
 
@@ -130,6 +176,7 @@ class Snake {
       `${this.currentPosition.r + 1},${this.currentPosition.c}`
     );
     this.path.push("R");
+    console.log("moveRight to " + this.currentPosition.r, this.currentPosition.c + 1)
     this.score += this.currentPosition.score;
   }
 
@@ -138,6 +185,7 @@ class Snake {
       `${this.currentPosition.r},${this.currentPosition.c - 1}`
     );
     this.path.push("U");
+    console.log("moveUp to " + this.currentPosition.r, this.currentPosition.c + 1)
     this.score += this.currentPosition.score;
   }
 
@@ -146,6 +194,7 @@ class Snake {
       `${this.currentPosition.r},${this.currentPosition.c + 1}`
     );
     this.path.push("D");
+    console.log("moveDown to " + this.currentPosition.r, this.currentPosition.c + 1)
     this.score += this.currentPosition.score;
   }
 }

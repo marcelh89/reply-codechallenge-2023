@@ -7,36 +7,42 @@ export default function useTheAlgorithm() {
 
   //sort snakes by length and begin with the biggest
   snakeList.sort((a, b) => (a.length > b.length ? -1 : 1));
-  console.log(snakeList);
+  //console.log(snakeList);
+
+  let totalScore = 0;
 
   for (let snake of snakeList) {
-    console.log("findNextPath for " + JSON.stringify(snake))
 
-    // while snake still has length to be covered with fields...
-    const nextPath = findNextPath(snake);
-    console.log(nextPath)
-    snake[nextPath.action]()
-    console.log(snake)
-    //
+    //const breakCondition = snake.path.length - 1 == snake.length; // TODO add wormhole extra condition here
+    
+    //do  {
+      const nextPath = findNextPath(snake);
+      console.log("nextPath", nextPath);
+      snake[nextPath.action]();
+      console.log(snake);
 
-    break;
+      console.log("breakCondition", snake.path.length - 1, snake.length)
+
+    //} while (!breakCondition)
+
+    totalScore += snake.score;
+
   }
 
-  const fullscore = 0;
-  console.log("fullscore", fullscore);
+  console.log("totalScore", totalScore);
   return generateOutput(snakeList);
 }
 
 function findNextPath(snake) {
-  const current_c = snake.startingPosition.c;
-  const current_r = snake.startingPosition.r;
+  const current_c = snake.currentPosition.c;
+  const current_r = snake.currentPosition.r;
   let possibleNextPositions = [];
 
   // left
   if (current_c > 0) {
     // can move left
     const nextLeft = board.initialMatrix.get(`${current_r},${current_c - 1}`);
-    nextLeft.action = 'moveLeft'
+    nextLeft.action = "moveLeft";
 
     //and is no wormhole and field is not used by another snake
     if (nextLeft.value !== "*" && !nextLeft.used)
@@ -47,7 +53,7 @@ function findNextPath(snake) {
   if (current_c < board.columns - 1) {
     // can move right
     const nextRight = board.initialMatrix.get(`${current_r},${current_c + 1}`);
-    nextRight.action = 'moveRight'
+    nextRight.action = "moveRight";
     //and is no wormhole and field is not used by another snake
     if (nextRight.value !== "*" && !nextRight.used)
       possibleNextPositions.push(nextRight);
@@ -55,9 +61,9 @@ function findNextPath(snake) {
 
   // up
   if (current_r > 0) {
-    // can move left
+    // can move up
     const nextUp = board.initialMatrix.get(`${current_r - 1},${current_c}`);
-    nextUp.action = 'moveUp'
+    nextUp.action = "moveUp";
     //and is no wormhole and field is not used by another snake
     if (nextUp.value !== "*" && !nextUp.used)
       possibleNextPositions.push(nextUp);
@@ -65,9 +71,9 @@ function findNextPath(snake) {
 
   // down
   if (current_r < board.rows - 1) {
-    // can move left
+    // can move down
     const nextDown = board.initialMatrix.get(`${current_r + 1},${current_c}`);
-    nextDown.action = 'moveDown'
+    nextDown.action = "moveDown";
     //and is no wormhole and field is not used by another snake
     if (nextDown.value !== "*" && !nextDown.used)
       possibleNextPositions.push(nextDown);
@@ -75,7 +81,7 @@ function findNextPath(snake) {
 
   possibleNextPositions.sort((a, b) => (a.score > b.score ? -1 : 1));
   //console.log("possibleNextPositions", possibleNextPositions);
-  return possibleNextPositions[0]
+  return possibleNextPositions[0];
 }
 
 /**
