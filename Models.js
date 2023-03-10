@@ -69,7 +69,7 @@ class Board {
 
 class Snake {
   constructor(length, snakeList) {
-    this.length = length;
+    this.length = Number(length);
     this.startingPosition = this.getFreeStartingPosition(snakeList);
     this.startingPosition.used = true;
 
@@ -77,6 +77,8 @@ class Snake {
     this.path = []; // [R,D,L]
     this.score = this.startingPosition.score;
   }
+
+  
 
   getFreeStartingPosition(snakeList) {
     let positionTaken = true;
